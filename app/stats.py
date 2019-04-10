@@ -117,7 +117,7 @@ def calculate_encore_song_count(setlist):
     return len([song for song in setlist if song["set_label"] == "Encore"])
 
 def calculate_encore2_song_count(setlist):
-    """Get encore 2 ong count for the setlist."""
+    """Get encore 2 song count for the setlist."""
     return len([song for song in setlist if song["set_label"] == "Encore 2"])        
 
 def get_show_rating(show_data_json):

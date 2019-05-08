@@ -1,3 +1,4 @@
+
 """Phish Stats"""
 from multiprocessing import Pool
 
@@ -5,7 +6,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import requests
 
-from app import utils
+from phish_stats import utils
 
 
 def get_single_show_data(api_key, showdate="2009-06-21"):
@@ -116,9 +117,11 @@ def calculate_encore_song_count(setlist):
     """Get encore song count for the setlist."""
     return len([song for song in setlist if song["set_label"] == "Encore"])
 
+
 def calculate_encore2_song_count(setlist):
     """Get encore 2 song count for the setlist."""
-    return len([song for song in setlist if song["set_label"] == "Encore 2"])        
+    return len([song for song in setlist if song["set_label"] == "Encore 2"])
+
 
 def get_show_rating(show_data_json):
     """Parse show_data_json for rating."""

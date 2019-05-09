@@ -10,7 +10,7 @@ These instructions will get you set up for development and testing.
 
 ### Prerequisites
 
-- [Python 3.7](https://www.python.org/downloads/release/python-370/)
+- [Python 3.6](https://www.python.org/downloads/release/python-360/)
 - [API key from Phish.net](http://api.phish.net/keys/)
 
 ### Installing
@@ -24,14 +24,14 @@ git clone https://github.com/abcmer/phish-stats.git
 cd phish-stats
 ```
 
-Create Python3.7 virtual env and activate
+Create Python3.6 virtual env and activate
 
 ```
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-Install Python3.7 dependencies
+Install Python3.6 dependencies
 
 ```
 pip install -r requirements.txt

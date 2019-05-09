@@ -29,12 +29,8 @@ class ShowCollection(object):
     def create_show_objects(self, api_key):
         """Creates a show object for each show."""
         for show in self.query_data:
-            try:
-                if show["artistid"] == 1:
-                    self.shows.append(Show(show["showdate"], api_key))
-            except:
-                import pdb
-                pdb.set_trace()
+            if show["artistid"] == 1:
+                self.shows.append(Show(show["showdate"], api_key))
 
 
 class Show(object):

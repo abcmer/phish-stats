@@ -9,148 +9,147 @@ import requests
 from phish_stats import utils
 
 
-def get_single_show_data(api_key, showdate="2009-06-21"):
-    """Get stats of a show by date"""
-    url = (
-        "https://api.phish.net/v3/setlists/get?"
-        "apikey={api_key}&showdate={showdate}".format(
-            api_key=api_key, showdate=showdate
+class Show(object):
+    """Show class"""
+
+    def __init__(self, date, api_key):
+        self.date = date
+        self.data = {}
+        self.setlist = []
+        self.song_counts = {}
+        self.location = {}
+        self.rating = ''
+        self.relative_date = ''
+        self.venue = ''
+        # Set all the show attributes
+        self.get_single_show_data(api_key)
+        self.set_attributes()
+
+    def set_attributes(self):
+        self.parse_setlist()
+        self.set_total_song_count()
+        self.set_set1_song_count()
+        self.set_set2_song_count()
+        self.set_set3_song_count()
+        self.set_encore_song_count()
+        self.set_encore2_song_count()
+        self.set_show_rating()
+        self.set_relative_date()
+        self.set_venue()
+        self.set_show_location()
+
+    def get_single_show_data(self, api_key):
+        """Get stats of a show by date"""
+        url = (
+            "https://api.phish.net/v3/setlists/get?"
+            "apikey={api_key}&showdate={date}".format(
+                api_key=api_key, date=self.date
+            )
         )
-    )
 
-    response = requests.get(url=url, timeout=15)
+        response = requests.get(url=url, timeout=15)
 
-    return response
+        assert response.status_code == 200
 
+        self.data = response.json()
 
-def get_setlist(setlist_data):
-    setlist = []
-    soup = BeautifulSoup(setlist_data, features="html.parser")
+    def parse_setlist(self):
+        setlist = []
+        soup = BeautifulSoup(
+            self.data["response"]["data"][0]['setlistdata'], features="html.parser")
 
-    for p in soup.find_all("p"):
+        for p in soup.find_all("p"):
 
-        setlist_tags = p.contents
-        for i, tag in enumerate(setlist_tags):
-            # handle Navigable Strings
-            if str(type(tag)) == "<class 'bs4.element.NavigableString'>":
-                # string. Need to add special handling
-                continue
+            setlist_tags = p.contents
+            for i, tag in enumerate(setlist_tags):
+                # handle Navigable Strings
+                if str(type(tag)) == "<class 'bs4.element.NavigableString'>":
+                    # string. Need to add special handling
+                    continue
 
-            if tag.name == "br":
-                continue
+                if tag.name == "br":
+                    continue
 
-            # handle setlist notes
-            elif tag.name == "sup":
-                element = {
-                    "note_id": int(tag.contents[0][1:2]),
-                    "element_type": "note",
-                    "body": tag["title"],
-                }
+                # handle setlist notes
+                elif tag.name == "sup":
+                    element = {
+                        "note_id": int(tag.contents[0][1:2]),
+                        "element_type": "note",
+                        "body": tag["title"],
+                    }
 
-                setlist[-1]["notes"].append(element)
+                    setlist[-1]["notes"].append(element)
 
-            elif tag["class"] == ["setlist-song"]:
-                phishnet_url = tag["href"]
-                element = {
-                    "song_id": phishnet_url.split("/")[-1],
-                    "element_type": "song",
-                    "song_url": phishnet_url,
-                    "set_label": tag.parent.span.contents[0],
-                    "notes": [],
-                }
+                elif tag["class"] == ["setlist-song"]:
+                    phishnet_url = tag["href"]
+                    element = {
+                        "song_id": phishnet_url.split("/")[-1],
+                        "element_type": "song",
+                        "song_url": phishnet_url,
+                        "set_label": tag.parent.span.contents[0],
+                        "notes": [],
+                    }
 
-                setlist.append(element)
+                    setlist.append(element)
 
-    return setlist
+        self.setlist = setlist
 
+    def set_total_song_count(self):
+        """Get total song count for the setlist."""
+        self.song_counts['total'] = len(self.setlist)
 
-def create_single_show_stats_array(show_data_json):
-    """Returns data array and column label array."""
-    show_data = show_data_json["response"]["data"][0]
-    setlist = get_setlist(show_data["setlistdata"])
+    def set_set1_song_count(self):
+        """Get set 1 song count for the setlist."""
+        self.song_counts['set1'] = len(
+            [song for song in self.setlist if song["set_label"] == "Set 1"])
 
-    return (
-        [
-            show_data["showdate"],
-            float(show_data["rating"]),
-            calculate_total_song_count(setlist),
-            calculate_set1_song_count(setlist),
-            calculate_set2_song_count(setlist),
-            calculate_set3_song_count(setlist),
-            calculate_encore_song_count(setlist),
-            calculate_encore2_song_count(setlist),
-        ],
-        [
-            "show_date",
-            "rating",
-            "total_song_count",
-            "set1_song_count",
-            "set2_song_count",
-            "set3_song_count",
-            "encore_song_count",
-            "encore2_song_count",
-        ],
-    )
+    def set_set2_song_count(self):
+        """Get set 2 song count for the setlist."""
+        self.song_counts['set2'] = len(
+            [song for song in self.setlist if song["set_label"] == "Set 2"])
 
+    def set_set3_song_count(self):
+        """Get set 3 song count for the setlist."""
+        self.song_counts['set3'] = len(
+            [song for song in self.setlist if song["set_label"] == "Set 3"])
 
-def calculate_total_song_count(setlist):
-    """Get total song count for the setlist."""
-    return len(setlist)
+    def set_encore_song_count(self):
+        """Get encore song count for the setlist."""
+        self.song_counts['encore'] = len(
+            [song for song in self.setlist if song["set_label"] == "Encore"])
 
+    def set_encore2_song_count(self):
+        """Get encore 2 song count for the setlist."""
+        self.song_counts['encore2'] = len(
+            [song for song in self.setlist if song["set_label"] == "Encore 2"])
 
-def calculate_set1_song_count(setlist):
-    """Get set 1 song count for the setlist."""
-    return len([song for song in setlist if song["set_label"] == "Set 1"])
+    def set_show_rating(self):
+        """Parse show_data_json for rating."""
+        self.rating = float(self.data["response"]["data"][0]["rating"])
 
+    def set_relative_date(self):
+        """Parse relative show date."""
+        self.relative_date = self.data["response"]["data"][0]["relative_date"]
 
-def calculate_set2_song_count(setlist):
-    """Get set 2 song count for the setlist."""
-    return len([song for song in setlist if song["set_label"] == "Set 2"])
+    def set_venue(self):
+        """Parse venue and venueid."""
+        self.venue = self.data["response"]["data"][0]["venue"]
 
+    def set_show_location(self):
+        """Set show location."""
+        show_location = self.data['response']['data'][0]['location']
+        self.location['country'] = show_location.split(",")[2].strip()
+        self.location['state'] = state = show_location.split(",")[1].strip()
+        self.location['city'] = state = show_location.split(",")[0].strip()
 
-def calculate_set3_song_count(setlist):
-    """Get set 3 song count for the setlist."""
-    return len([song for song in setlist if song["set_label"] == "Set 3"])
+    def parse_show_location(self):
+        """Returns the City, State, Country of a show."""
 
+        city = show_location.split(",")[0].strip()
+        state = show_location.split(",")[1].strip()
+        country = show_location.split(",")[2].strip()
 
-def calculate_encore_song_count(setlist):
-    """Get encore song count for the setlist."""
-    return len([song for song in setlist if song["set_label"] == "Encore"])
-
-
-def calculate_encore2_song_count(setlist):
-    """Get encore 2 song count for the setlist."""
-    return len([song for song in setlist if song["set_label"] == "Encore 2"])
-
-
-def get_show_rating(show_data_json):
-    """Parse show_data_json for rating."""
-    return float(show_data_json["response"]["data"][0]["rating"])
-
-
-def get_relative_show_date(show_data_json):
-    """Parse relative show date."""
-    return show_data_json["response"]["data"][0]["relative_date"]
-
-
-def get_venue(show_data_json):
-    """Parse venue and venueid."""
-    return show_data_json["response"]["data"][0]["venue"]
-
-
-def get_relative_show_date(show_data_json):
-    """Parse relative show date."""
-    return show_data_json["response"]["data"][0]["relative_date"]
-
-
-def parse_show_location(show_location):
-    """Returns the City, State, Country of a show."""
-
-    city = show_location.split(",")[0].strip()
-    state = show_location.split(",")[1].strip()
-    country = show_location.split(",")[2].strip()
-
-    return city, state, country
+        return city, state, country
 
 
 def query_shows(api_key, **kwargs):
@@ -177,18 +176,3 @@ def parse_show_dates(show_query_response, artists=[1]):
         if show["artistid"] in artists:
             show_dates.append(show["showdate"])
     return show_dates
-
-
-def create_df_phish_stats(api_key, show_dates):
-    """Returns a pandas dataframe of phish stats."""
-
-    multi_show_data = []
-    # Generate data array for each show
-    for date in show_dates:
-        show_data_json = get_single_show_data(api_key, date).json()
-        single_show_stats, column_labels = create_single_show_stats_array(
-            show_data_json
-        )
-        multi_show_data.append(single_show_stats)
-    columns = column_labels
-    return pd.DataFrame(multi_show_data, columns=columns)

@@ -10,7 +10,7 @@ import requests
 from phish_stats import utils
 
 
-class ShowCollection(object):
+class Collection(object):
     """Show collection class"""
 
     def __init__(self, api_key, **kwargs):

@@ -1,16 +1,12 @@
 """Collection model representing a collection of shows"""
-from multiprocessing import Pool
-
-from bs4 import BeautifulSoup
 import numpy as np
-import pandas as pd
 import requests
 
 from phish_stats import utils
 from phish_stats.models import Show
 
 
-class Collection(object):
+class Collection():
     """Show collection class"""
 
     def __init__(self, api_key, **kwargs):

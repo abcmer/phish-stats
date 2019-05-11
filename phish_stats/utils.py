@@ -1,7 +1,5 @@
 """Utility functions."""
 
-import json
-
 
 def generate_query_string(query_params):
     """Generate a query string given kwargs dictionary."""

@@ -1,15 +1,9 @@
 """Phish Stats"""
-from multiprocessing import Pool
-
 from bs4 import BeautifulSoup
-import numpy as np
-import pandas as pd
 import requests
 
-from phish_stats import utils
 
-
-class Show(object):
+class Show():
     """Show class"""
 
     def __init__(self, date, api_key):
@@ -23,7 +17,11 @@ class Show(object):
         self.data = {}
         self.setlist = []
         self.song_counts = {}
-        self.location = {}
+        self.location = {
+            'country': None,
+            'state': None,
+            'city': None
+        }
         self.rating = None
         self.venue = None
         # Set all the show attributes
@@ -36,6 +34,7 @@ class Show(object):
         return self.date['short']
 
     def set_attributes(self):
+        """Set attributes of Show"""
         self.parse_setlist()
         self.set_total_song_count()
         self.set_set1_song_count()
@@ -61,14 +60,15 @@ class Show(object):
         self.data = response.json()
 
     def parse_setlist(self):
+        """Parses setlist from raw setlist data"""
         setlist = []
         soup = BeautifulSoup(self.data["response"]["data"][0]['setlistdata'],
                              features="html.parser")
 
-        for p in soup.find_all("p"):
+        for p_tag in soup.find_all("p"):
 
-            setlist_tags = p.contents
-            for i, tag in enumerate(setlist_tags):
+            setlist_tags = p_tag.contents
+            for tag in setlist_tags:
                 # handle Navigable Strings
                 if str(type(tag)) == "<class 'bs4.element.NavigableString'>":
                     # string. Need to add special handling
@@ -147,14 +147,5 @@ class Show(object):
         """Set show location."""
         show_location = self.data['response']['data'][0]['location']
         self.location['country'] = show_location.split(",")[2].strip()
-        self.location['state'] = state = show_location.split(",")[1].strip()
-        self.location['city'] = state = show_location.split(",")[0].strip()
-
-    def parse_show_location(self):
-        """Returns the City, State, Country of a show."""
-
-        city = show_location.split(",")[0].strip()
-        state = show_location.split(",")[1].strip()
-        country = show_location.split(",")[2].strip()
-
-        return city, state, country
+        self.location['state'] = show_location.split(",")[1].strip()
+        self.location['city'] = show_location.split(",")[0].strip()

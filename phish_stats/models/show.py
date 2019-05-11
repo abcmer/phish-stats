@@ -50,12 +50,9 @@ class Show(object):
 
     def get_single_show_data(self, api_key):
         """Get stats of a show by date"""
-        url = (
-            "https://api.phish.net/v3/setlists/get?"
-            "apikey={api_key}&showdate={date}".format(
-                api_key=api_key, date=self.date['short']
-            )
-        )
+        url = ("https://api.phish.net/v3/setlists/get?"
+               "apikey={api_key}&showdate={date}".format(
+                   api_key=api_key, date=self.date['short']))
 
         response = requests.get(url=url, timeout=15)
 
@@ -65,8 +62,8 @@ class Show(object):
 
     def parse_setlist(self):
         setlist = []
-        soup = BeautifulSoup(
-            self.data["response"]["data"][0]['setlistdata'], features="html.parser")
+        soup = BeautifulSoup(self.data["response"]["data"][0]['setlistdata'],
+                             features="html.parser")
 
         for p in soup.find_all("p"):
 
@@ -139,7 +136,8 @@ class Show(object):
 
     def set_relative_date(self):
         """Parse relative show date."""
-        self.date['relative'] = self.data["response"]["data"][0]["relative_date"]
+        self.date['relative'] = self.data["response"]["data"][0][
+            "relative_date"]
 
     def set_venue(self):
         """Parse venue and venueid."""

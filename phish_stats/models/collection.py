@@ -1,4 +1,3 @@
-
 """Collection model representing a collection of shows"""
 from multiprocessing import Pool
 

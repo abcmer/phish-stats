@@ -1,6 +1,5 @@
 
 """Phish Stats"""
-from collections import defaultdict
 from multiprocessing import Pool
 
 from bs4 import BeautifulSoup

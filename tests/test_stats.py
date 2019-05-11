@@ -90,9 +90,16 @@ class TestCurveball(unittest.TestCase):
 
     def test_relative_date(self):
         """Test get relative date."""
-        self.assertEqual(self.show.date['relative'], None)
 
-    def test_location(self):
+
+<< << << < HEAD
+self.assertEqual(self.show.date['relative'], None)
+== == == =
+self.assertEqual(self.show.relative_date, None)
+>>>>>> > origin/master
+
+
+def test_location(self):
         """Can get location of show."""
         self.assertEqual(self.show.location, {})
 
@@ -104,8 +111,13 @@ class TestShowCollection(unittest.TestCase):
     def setUpClass(cls):
         """Setup function."""
         kwargs = {
+            << << << < HEAD
             'year': 1998,
             'month': 4
+            == == == =
+            'year': '2018',
+            'month': '12'
+            >> >>>> > origin/master
         }
         cls.collection = ShowCollection(API_KEY, **kwargs)
 

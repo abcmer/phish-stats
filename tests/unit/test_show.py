@@ -2,7 +2,7 @@
 import os
 import unittest
 
-from phish_stats import *
+from phish_stats import Show
 from phish_stats.utils import *
 
 API_KEY = os.environ['PHISHNET_API_KEY']

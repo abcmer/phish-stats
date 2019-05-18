@@ -60,9 +60,9 @@ class TestShow(unittest.TestCase):
 
     def test_location(self):
         """Can get location of show."""
-        self.assertEqual(self.show.location['country'], 'USA')
-        self.assertEqual(self.show.location['state'], 'VA')
-        self.assertEqual(self.show.location['city'], 'Hampton')
+        self.assertEqual(self.show.country, 'USA')
+        self.assertEqual(self.show.state, 'VA')
+        self.assertEqual(self.show.city, 'Hampton')
 
     def test_songs_played(self):
         """Can get booleans of song played."""
@@ -101,8 +101,9 @@ class TestCurveball(unittest.TestCase):
 
     def test_location(self):
         """Can get location of show."""
-        self.assertEqual(self.show.location, {
-                         'country': None, 'state': None, 'city': None})
+        self.assertEqual(self.show.country, None)
+        self.assertEqual(self.show.state, None)
+        self.assertEqual(self.show.country, None)
 
 
 if __name__ == '__main__':

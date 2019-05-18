@@ -15,11 +15,9 @@ class Show():
         self.data = {}
         self.setlist = []
         self.song_counts = {}
-        self.location = {
-            'country': None,
-            'state': None,
-            'city': None
-        }
+        self.country = None
+        self.state = None
+        self.city = None
         self.rating = None
         self.venue = None
         self.song_booleans = {
@@ -150,9 +148,9 @@ class Show():
     def set_show_location(self):
         """Set show location."""
         show_location = self.data['response']['data'][0]['location']
-        self.location['country'] = show_location.split(",")[2].strip()
-        self.location['state'] = show_location.split(",")[1].strip()
-        self.location['city'] = show_location.split(",")[0].strip()
+        self.country = show_location.split(",")[2].strip()
+        self.state = show_location.split(",")[1].strip()
+        self.city = show_location.split(",")[0].strip()
 
     def set_song_booleans(self):
         """Sets song booleans to 1 if hit songs were played."""

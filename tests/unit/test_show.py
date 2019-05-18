@@ -55,8 +55,8 @@ class TestShow(unittest.TestCase):
 
     def test_relative_date(self):
         """Test get relative date."""
-        self.assertTrue(isinstance(self.show.date['relative'], str))
-        self.assertTrue(self.show.date['relative'].endswith('ago'))
+        self.assertTrue(isinstance(self.show.relative_date, str))
+        self.assertTrue(self.show.relative_date.endswith('ago'))
 
     def test_location(self):
         """Can get location of show."""
@@ -97,7 +97,7 @@ class TestCurveball(unittest.TestCase):
 
     def test_relative_date(self):
         """Test get relative date."""
-        self.assertEqual(self.show.date['relative'], None)
+        self.assertEqual(self.show.relative_date, None)
 
     def test_location(self):
         """Can get location of show."""

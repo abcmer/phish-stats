@@ -7,13 +7,11 @@ class Show():
     """Show class"""
 
     def __init__(self, date, api_key):
-        self.date = {
-            'short': date,
-            'year': int(date.split('-')[0]),
-            'month': int(date.split('-')[1]),
-            'day': int(date.split('-')[2]),
-            'relative': None,
-        }
+        self.date = date
+        self.year = int(date.split('-')[0])
+        self.month = int(date.split('-')[1])
+        self.day = int(date.split('-')[2])
+        self.relative_date = None
         self.data = {}
         self.setlist = []
         self.song_counts = {}
@@ -35,7 +33,7 @@ class Show():
 
     def __repr__(self):
         """Representation of a show."""
-        return self.date['short']
+        return self.date
 
     def set_attributes(self):
         """Set attributes of Show"""
@@ -54,12 +52,11 @@ class Show():
 
     def get_single_show_data(self, api_key):
         """Get stats of a show by date"""
-        short_date = self.date['short']
         url = ("https://api.phish.net/v3/setlists/get?"
                "apikey={api_key}&showdate={date}".format(
-                   api_key=api_key, date=short_date))
+                   api_key=api_key, date=self.date))
 
-        print(f'getting setlist for {short_date}')
+        print(f'getting setlist for {self.date}')
         response = requests.get(url=url, timeout=15)
 
         assert response.status_code == 200
@@ -143,7 +140,7 @@ class Show():
 
     def set_relative_date(self):
         """Parse relative show date."""
-        self.date['relative'] = self.data["response"]["data"][0][
+        self.relative_date = self.data["response"]["data"][0][
             "relative_date"]
 
     def set_venue(self):

@@ -12,7 +12,7 @@ from phish_stats import phishnet_api as api
 class Collection():
     """Show collection class"""
 
-    def __init__(self, dates=[], shows=[]):
+    def __init__(self, dates=set(), shows=set()):
         self.dates = dates
         self.shows = shows
 
@@ -24,12 +24,17 @@ class Collection():
     def add_shows(self, api_key, **kwargs):
         """Adds shows to collection."""
         if kwargs:
-            self.dates = api.query_shows_with_params(api_key, **kwargs)
+            self.dates = set(api.query_shows_with_params(api_key, **kwargs))
         else:
-            self.dates = api.query_all_show_dates(api_key)
+            self.dates = set(api.query_all_show_dates(api_key))
 
         for date in self.dates:
-            self.shows.append(Show(date))
+            self.shows.add(Show(date))
+
+    def calculate_shows_per_year(self):
+        """Returns year to show count dictionary."""
+        import pdb
+        pdb.set_trace()
 
     def calculate_avg_rating(self):
         """Returns the average rating of the collection of shows"""

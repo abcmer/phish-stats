@@ -40,9 +40,45 @@ class TestAllTime(unittest.TestCase):
         cls.collection = Collection()
         cls.collection.add_shows(API_KEY)
 
-    # def test_shows_per_year(self):
-    #     """Test calculate shows per year."""
-    #     self.collection.calculate_shows_per_year()
+    def test_shows_per_year(self):
+        """Test calculate shows per year."""
+        shows_per_year = self.collection.calculate_shows_per_year()
+
+        self.assertEqual(shows_per_year[0:33], [
+            (1983, 3),
+            (1984, 3),
+            (1985, 30),
+            (1986, 22),
+            (1987, 47),
+            (1988, 96),
+            (1989, 126),
+            (1990, 150),
+            (1991, 133),
+            (1992, 124),
+            (1993, 114),
+            (1994, 128),
+            (1995, 83),
+            (1996, 74),
+            (1997, 84),
+            (1998, 75),
+            (1999, 69),
+            (2000, 58),
+            (2001, 1),
+            (2002, 3),
+            (2003, 47),
+            (2004, 21),
+            (2008, 1),
+            (2009, 52),
+            (2010, 50),
+            (2011, 41),
+            (2012, 37),
+            (2013, 42),
+            (2014, 42),
+            (2015, 31),
+            (2016, 48),
+            (2017, 29),
+            (2018, 42)
+        ])
 
 
 if __name__ == '__main__':

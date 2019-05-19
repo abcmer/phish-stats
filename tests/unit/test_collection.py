@@ -19,6 +19,7 @@ class TestCollection(unittest.TestCase):
             'month': 4
         }
         cls.collection = Collection(API_KEY, **kwargs)
+        cls.collection.set_show_attributes(API_KEY)
 
     def test_number_of_shows(self):
         """Test accurate number of shows"""
@@ -33,7 +34,6 @@ class TestCollection(unittest.TestCase):
 class TestAllTime(unittest.TestCase):
     """Test class for all time shows."""
 
-    @unittest.skip('all time test takes too much time to run')
     def test_get_all_shows(self):
         """Test create all time collection"""
         collection = Collection(API_KEY)

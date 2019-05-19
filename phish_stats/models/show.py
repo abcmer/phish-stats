@@ -1,7 +1,7 @@
 """Phish Stats"""
 from bs4 import BeautifulSoup
 
-from phish_stats.phishnet_api import get_single_show_data
+from phish_stats.phishnet_api import get_show_data
 
 
 class Show():
@@ -26,7 +26,7 @@ class Show():
             'tweezer': 0,
         }
         # Set all the show attributes
-        self.data = get_single_show_data(self.date, api_key)
+        self.data = get_show_data(self.date, api_key)
         if self.data['response']['data']:
             self.set_attributes()
 

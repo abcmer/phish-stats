@@ -12,26 +12,22 @@ from phish_stats import phishnet_api as api
 class Collection():
     """Show collection class"""
 
-    def __init__(self, api_key, **kwargs):
-        self.dates = []
-        self.shows = []
-        self.get_show_dates(api_key, **kwargs)
-        self.create_show_objects(api_key)
+    def __init__(self, dates=[], shows=[]):
+        self.dates = dates
+        self.shows = shows
 
     def set_show_attributes(self, api_key):
-        """Calls set_attributes() for each show in the collection."""
+        """Calls get_set_phishnet_data() for each show in the collection."""
         for show in self.shows:
-            show.set_attributes(api_key)
+            show.get_set_phishnet_data(api_key)
 
-    def get_show_dates(self, api_key, **kwargs):
-        """Gets show dates based on params or fetch all shows."""
+    def add_shows(self, api_key, **kwargs):
+        """Adds shows to collection."""
         if kwargs:
             self.dates = api.query_shows_with_params(api_key, **kwargs)
         else:
             self.dates = api.query_all_show_dates(api_key)
 
-    def create_show_objects(self, api_key):
-        """Creates a show object for each show."""
         for date in self.dates:
             self.shows.append(Show(date))
 

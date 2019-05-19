@@ -18,7 +18,8 @@ class TestCollection(unittest.TestCase):
             'year': 1998,
             'month': 4
         }
-        cls.collection = Collection(API_KEY, **kwargs)
+        cls.collection = Collection()
+        cls.collection.add_shows(API_KEY, **kwargs)
         cls.collection.set_show_attributes(API_KEY)
 
     def test_number_of_shows(self):
@@ -29,14 +30,6 @@ class TestCollection(unittest.TestCase):
         """Test average rating by month."""
         avg_rating = self.collection.calculate_avg_rating()
         self.assertTrue(isinstance(avg_rating, float))
-
-
-class TestAllTime(unittest.TestCase):
-    """Test class for all time shows."""
-
-    def test_get_all_shows(self):
-        """Test create all time collection"""
-        collection = Collection(API_KEY)
 
 
 if __name__ == '__main__':

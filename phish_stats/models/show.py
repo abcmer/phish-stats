@@ -25,16 +25,12 @@ class Show():
             'you-enjoy-myself': 0,
             'tweezer': 0,
         }
-        # # Set all the show attributes
-        # self.data = get_show_data(self.date, api_key)
-        # if self.data['response']['data']:
-        #     self.set_attributes()
 
     def __repr__(self):
         """Representation of a show."""
         return self.date
 
-    def set_attributes(self, api_key):
+    def get_set_phishnet_data(self, api_key):
         """Set attributes of Show"""
         self.data = get_show_data(self.date, api_key)
         if self.data['response']['data']:

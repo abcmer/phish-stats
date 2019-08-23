@@ -112,7 +112,7 @@ class TestAllTime(unittest.TestCase):
 
     def test_write_to_csv(self):
         """Test write collection data to csv file."""
-        filepath = 'tests/output/alltime.csv'
+        filepath = 'tests/data/alltime.csv'
         self.collection.write_to_csv(filepath)
 
 if __name__ == '__main__':

@@ -110,7 +110,7 @@ venv.bak/
 .vscode
 
 # Bokeh outputs
-*.html
+app/tests/data/output/*.html
 
 # Test output data
 tests/data/output/*.csv

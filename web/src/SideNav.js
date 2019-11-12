@@ -1,21 +1,13 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { Col } from 'react-bootstrap'
 
 export default class SidNav extends React.Component {
   render() {
     return (
-      <Nav defaultActiveKey="/home" className="flex-column">
-        <Nav.Link href="/home">Active</Nav.Link>
-        <Nav.Link eventKey="link-1">Link</Nav.Link>
-        <Nav.Link eventKey="link-2">Link</Nav.Link>
-        <Nav.Link eventKey="disabled" disabled>
-          Disabled
-        </Nav.Link>
-      </Nav>
+      <Col lg="2" className="sidebar">
+        <div className="sidebar-item">Shows Per Year</div>
+        <div className="sidebar-item">Shows By State</div>
+      </Col>
     );
   }
 }

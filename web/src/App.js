@@ -1,22 +1,20 @@
 import React from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
-import NavBar from './NavBar';
+import TopNav from './TopNav';
 import SideNav from './SideNav';
-import logo from './logo.svg';
+import Chart from './Chart';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <NavBar></NavBar>
-      <div style={{ minHeight: "100vh" }}>
-        <Container style={{ minHeight: "100vh" }} fluid>
-          <Row style={{ minHeight: "100vh" }}>
-            <Col xs lg="2" className="side-bar">Side Bar</Col>
-            <Col className="main-content">Main Content</Col>
-          </Row>
-        </Container>
-      </div>
+      <TopNav></TopNav>
+      <Container className="body" fluid>
+        <Row style={{ minHeight: "95vh" }}>
+          <SideNav />
+          <Chart />
+        </Row>
+      </Container>
     </div>
   );
 }

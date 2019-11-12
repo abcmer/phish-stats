@@ -21,8 +21,22 @@
   color: #09d3ac;
 }
 
-.side-bar {
+.body {
+  padding-top: 50px;
+  height: 100%;
+}
+
+.top-nav {
+  height: 50px;
+}
+
+.sidebar {
   background-color: #f8f9fa;
   border-right: 0.2px solid grey;
   height: "100vh";
+  padding: 1rem;
+}
+
+.sidebar-item {
+  /* padding-left: 2rem; */
 }

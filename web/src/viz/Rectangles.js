@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Col } from 'react-bootstrap';
 
 const generateDataset = () => (
   Array(10).fill(0).map(() => ([
@@ -27,7 +28,7 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-const Circles = () => {
+const Rectangles = () => {
   const [dataset, setDataset] = useState(
     generateDataset()
   )
@@ -36,16 +37,18 @@ const Circles = () => {
     setDataset(newDataset)
   }, 2000)
   return (
-    <svg viewBox="0 0 100 50">
-      {dataset.map(([x, y], i) => (
-        <circle
-          cx={x}
-          cy={y}
-          r="3"
-        />
-      ))}
-    </svg>
+    <Col>
+      <svg viewBox="0 0 100 50">
+        {dataset.map(([x, y], i) => (
+          <rect
+            width={x}
+            height={y}
+            style={{ fill: "rgb(0,0,255)", strokeWidth: "3", stroke: "rgb(0,0,0)" }}
+          />
+        ))}
+      </svg>
+    </Col>
   )
 }
 
-export default Circles
+export default Rectangles

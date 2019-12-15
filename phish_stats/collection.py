@@ -1,6 +1,7 @@
 """Collection model representing a collection of shows"""
 from collections import Counter
 import datetime
+import json
 
 from bokeh.core.properties import value
 from bokeh.plotting import figure, output_file, show
@@ -60,7 +61,8 @@ class Collection():
                 'city': show.city,
                 'rating': show.rating,
                 'venue': show.venue,
-                'era': show.era             
+                'era': show.era,
+                'setlist': json.dumps(show.setlist)
             } for show in self.shows]
 
         return pd.DataFrame.from_dict(data)
@@ -199,4 +201,8 @@ class Collection():
         if set(df_collection.columns) != set(columns):
             raise TypeError('Not a valid phish-stats collection csv')
 
-        return df_collection       
+        return df_collection  
+
+    def create_kmeans_matrix(self):
+        """Returns a numpy matrix representing song selections."""
+        import pdb; pdb.set_trace()
